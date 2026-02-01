@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "213273213851",
+    "project_id": "exams-project-e5b5c",
+    "storage_bucket": "exams-project-e5b5c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213273213851:android:1c48fa945b7f2fa379ff3e",
+        "android_client_info": {
+          "package_name": "com.example.esame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlWb-MBUYj4zrMWHjSaJ3_vY1sGNfRVvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
