@@ -1,4 +1,4 @@
-# SouChef 👨‍🍳
+# SouChef 👨‍🍳 -Flutter Project
 
 SouChef is a comprehensive recipe and cooking application built with Flutter. It allows users to browse recipes, follow chefs, view cooking reels, and manage their profile. The app is designed with a modern UI, responsiveness, and robust architecture.
 
