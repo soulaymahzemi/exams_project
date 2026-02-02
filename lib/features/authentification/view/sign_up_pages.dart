@@ -78,7 +78,7 @@ class _SignUpPageState extends State<SignUpPage> {
             right: 0,
             height: 0.4.sh,
             child: Image.asset(
-              'assets/images/souchef_header.png',
+              'assets/images/auth_header.png',
               fit: BoxFit.cover,
             ),
           ),

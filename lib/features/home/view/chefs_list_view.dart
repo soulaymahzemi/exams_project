@@ -6,6 +6,8 @@ import 'package:esame/core/them/text_style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:esame/core/widgets/custom_appbar.dart';
 
+import 'package:esame/features/home/view/chefs_list_shimmer.dart';
+
 class ChefsListView extends StatefulWidget {
   const ChefsListView({super.key});
 
@@ -26,15 +28,14 @@ class _ChefsListViewState extends State<ChefsListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: white,
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         title: 'Discover Chefs',
-              automaticallyImplyLeading: false,
-
+        automaticallyImplyLeading: false,
       ),
       body: Consumer<ChefViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.isLoading) {
-            return const Center(child: CircularProgressIndicator(color: secondary));
+            return const ChefsListShimmer();
           }
 
           if (viewModel.error != null) {

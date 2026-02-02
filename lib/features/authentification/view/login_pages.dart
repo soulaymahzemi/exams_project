@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
             right: 0,
             height: 0.45.sh,
             child: Image.asset(
-              'assets/images/souchef_header.png',
+              'assets/images/auth_header.png',
               fit: BoxFit.cover,
             ),
           ),

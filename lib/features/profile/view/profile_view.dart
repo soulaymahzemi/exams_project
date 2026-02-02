@@ -157,7 +157,7 @@ class ProfileView extends StatelessWidget {
                             icon: Icons.favorite,
                             count: recipeVM.favoriteRecipes.length,
                             label: 'Favorites',
-                            color: Colors.red,
+                            color: red,
                           ),
                           
                           Container(

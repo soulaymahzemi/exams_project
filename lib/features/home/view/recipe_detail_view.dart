@@ -1,3 +1,4 @@
+import 'package:esame/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:esame/features/home/viewmodel/recipe_viewmodel.dart';
 import 'package:esame/core/widgets/favorite_button.dart';
 import 'package:esame/core/widgets/category_tag.dart';
 import 'package:esame/core/widgets/custom_appbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RecipeDetailView extends StatefulWidget {
   final String recipeId;
@@ -35,6 +37,17 @@ class _RecipeDetailViewState extends State<RecipeDetailView> {
         _recipe = recipe;
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _launchYoutube(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not launch YouTube')),
+        );
+      }
     }
   }
 
@@ -153,9 +166,9 @@ class _RecipeDetailViewState extends State<RecipeDetailView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _buildStatCard(Icons.timer_outlined, "30 min", "Time"),
-                        _buildStatCard(Icons.star_outline, "4.8", "Rating"),
-                        _buildStatCard(Icons.local_fire_department_outlined, "320", "kcal"),
+                        _buildStatCard(Icons.timer_outlined, recipe.time, "Time"),
+                        _buildStatCard(Icons.star_outline, recipe.rating, "Rating"),
+                        _buildStatCard(Icons.local_fire_department_outlined, recipe.calories, "kcal"),
                       ],
                     ),
 
@@ -195,7 +208,7 @@ class _RecipeDetailViewState extends State<RecipeDetailView> {
                       style: bodyTextStyle.copyWith(fontSize: 15.sp, height: 1.5),
                     ),
 
-                    SizedBox(height: 50.h),
+                    SizedBox(height: 100.h),
                   ],
                 ),
               ),
@@ -203,6 +216,19 @@ class _RecipeDetailViewState extends State<RecipeDetailView> {
           ),
         ],
       ),
+      bottomNavigationBar: recipe.youtubeUrl.isNotEmpty
+          ? Container(
+              padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 24.h),
+              decoration: const BoxDecoration(
+                color: white,
+              ),
+              child: CustomButton(
+                text: 'Watch Video Tutorial',
+                icon: const Icon(Icons.play_circle_fill, color: Colors.white),
+                onPressed: () => _launchYoutube(recipe.youtubeUrl),
+              ),
+            )
+          : null,
     );
   }
 

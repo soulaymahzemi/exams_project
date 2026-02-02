@@ -4,6 +4,8 @@ import 'package:esame/features/home/model/recipe_model.dart';
 import 'package:esame/core/them/color.dart';
 import 'package:esame/core/them/text_style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/foundation.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RecipeVideoReel extends StatefulWidget {
   final RecipeModel recipe;
@@ -65,10 +67,31 @@ class _RecipeVideoReelState extends State<RecipeVideoReel> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        // YouTube Video WebView
+        // YouTube Video WebView or Web Fallback
         Container(
           color: black,
-          child: WebViewWidget(controller: _controller),
+          child: kIsWeb 
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.play_circle_fill, color: secondary, size: 80.sp),
+                    SizedBox(height: 20.h),
+                    Text(
+                      "Video playback is restricted on Web.",
+                      style: titleTextStyle.copyWith(color: white, fontSize: 16.sp),
+                    ),
+                    SizedBox(height: 10.h),
+                    ElevatedButton.icon(
+                      onPressed: () => launchUrl(Uri.parse(widget.recipe.youtubeUrl)),
+                      icon: const Icon(Icons.open_in_new),
+                      label: const Text("Watch on YouTube"),
+                      style: ElevatedButton.styleFrom(backgroundColor: secondary),
+                    ),
+                  ],
+                ),
+              )
+            : WebViewWidget(controller: _controller),
         ),
 
         // Loading Indicator

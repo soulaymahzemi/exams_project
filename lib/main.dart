@@ -10,16 +10,21 @@ import 'package:esame/features/intro/view/welcome_view.dart';
 import 'package:esame/features/home/viewmodel/recipe_viewmodel.dart';
 import 'package:esame/features/home/viewmodel/chef_viewmodel.dart';
 import 'package:esame/core/them/app_theme.dart';
+import 'package:esame/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  
+
+  // Cette ligne fonctionnera maintenant sans erreur !
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(
     MultiProvider(
       providers: [
@@ -40,7 +45,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: kIsWeb ? const Size(1000, 800) : const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
