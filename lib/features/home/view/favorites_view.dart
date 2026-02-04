@@ -23,33 +23,38 @@ class FavoritesView extends StatelessWidget {
           final favorites = viewModel.favoriteRecipes;
 
           if (favorites.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.favorite_border,
-                    size: 80.sp,
-                    color: empty.withOpacity(0.5),
+            return SingleChildScrollView(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 40.h),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.favorite_border,
+                        size: 80.sp,
+                        color: empty.withOpacity(0.5),
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        'No favorites yet',
+                        style: bodyTextStyle.copyWith(
+                          fontSize: 16.sp,
+                          color: empty,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        'Add recipes to your favorites\nto see them here',
+                        textAlign: TextAlign.center,
+                        style: bodyTextStyle.copyWith(
+                          fontSize: 14.sp,
+                          color: empty.withOpacity(0.7),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'No favorites yet',
-                    style: bodyTextStyle.copyWith(
-                      fontSize: 16.sp,
-                      color: empty,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    'Add recipes to your favorites\nto see them here',
-                    textAlign: TextAlign.center,
-                    style: bodyTextStyle.copyWith(
-                      fontSize: 14.sp,
-                      color: empty.withOpacity(0.7),
-                    ),
-                  ),
-                ],
+                ),
               ),
             );
           }

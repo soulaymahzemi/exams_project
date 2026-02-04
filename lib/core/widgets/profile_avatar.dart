@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../them/color.dart';
@@ -45,7 +46,7 @@ class ProfileAvatar extends StatelessWidget {
   }
 
   Widget _buildImage() {
-
+    // If it's a network image, use Image.network
     if (imageUrl!.startsWith('http://') || imageUrl!.startsWith('https://')) {
       return Image.network(
         imageUrl!,
@@ -55,16 +56,21 @@ class ProfileAvatar extends StatelessWidget {
         errorBuilder: (_, __, ___) => _buildInitial(),
       );
     } 
-
-    else {
-      return Image.file(
-        File(imageUrl!),
-        fit: BoxFit.cover,
-        width: size.w,
-        height: size.h,
-        errorBuilder: (_, __, ___) => _buildInitial(),
-      );
+    
+    // For local files
+    // On Web, Image.file is not supported, so we fall back to initial if it's not a network image
+    if (kIsWeb) {
+      return _buildInitial();
     }
+
+    // On mobile/desktop, use Image.file
+    return Image.file(
+      File(imageUrl!),
+      fit: BoxFit.cover,
+      width: size.w,
+      height: size.h,
+      errorBuilder: (_, __, ___) => _buildInitial(),
+    );
   }
 
   Widget _buildInitial() {

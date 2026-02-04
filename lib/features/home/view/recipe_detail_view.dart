@@ -132,103 +132,164 @@ class _RecipeDetailViewState extends State<RecipeDetailView> {
               ),
               child: Padding(
                 padding: EdgeInsets.all(24.r),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    bool isWide = constraints.maxWidth > 800;
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    if (isWide) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildHeader(recipe),
+                                SizedBox(height: 32.h),
+                                _buildStats(recipe),
+                                SizedBox(height: 32.h),
+                                _buildIngredients(recipe),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 40.w),
+                          Expanded(
+                            flex: 6,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildInstructions(recipe),
+                                if (recipe.youtubeUrl.isNotEmpty) ...[
+                                  SizedBox(height: 40.h),
+                                  _buildVideoButton(recipe),
+                                ],
+                                SizedBox(height: 100.h),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(recipe.name, style: titleTextStyle.copyWith(fontSize: 24.sp)),
-                              SizedBox(height: 8.h),
-                              Row(
-                                children: [
-                                  Icon(Icons.location_on_outlined, color: empty, size: 16.sp),
-                                  SizedBox(width: 4.w),
-                                  Text(recipe.area, style: bodyTextStyle.copyWith(color: empty, fontSize: 14.sp)),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        CategoryTag(label: recipe.category),
+                        _buildHeader(recipe),
+                        SizedBox(height: 32.h),
+                        _buildStats(recipe),
+                        SizedBox(height: 32.h),
+                        _buildIngredients(recipe),
+                        SizedBox(height: 32.h),
+                        _buildInstructions(recipe),
+                        SizedBox(height: 100.h),
                       ],
-                    ),
-
-                    SizedBox(height: 32.h),
-
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildStatCard(Icons.timer_outlined, recipe.time, "Time"),
-                        _buildStatCard(Icons.star_outline, recipe.rating, "Rating"),
-                        _buildStatCard(Icons.local_fire_department_outlined, recipe.calories, "kcal"),
-                      ],
-                    ),
-
-                    SizedBox(height: 32.h),
-
-
-                    Text("Ingredients", style: titleTextStyle.copyWith(fontSize: 18.sp)),
-                    SizedBox(height: 16.h),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: recipe.ingredients.length,
-                      separatorBuilder: (context, index) => SizedBox(height: 12.h),
-                      itemBuilder: (context, index) {
-                        return Row(
-                          children: [
-                            Container(
-                              width: 6.r,
-                              height: 6.r,
-                              decoration: const BoxDecoration(color: secondary, shape: BoxShape.circle),
-                            ),
-                            SizedBox(width: 12.w),
-                            Expanded(child: Text(recipe.ingredients[index], style: bodyTextStyle.copyWith(fontSize: 15.sp))),
-                            Text(recipe.measures[index], style: bodyTextStyle.copyWith(color: empty, fontSize: 14.sp)),
-                          ],
-                        );
-                      },
-                    ),
-
-                    SizedBox(height: 32.h),
-
-
-                    Text("Instructions", style: titleTextStyle.copyWith(fontSize: 18.sp)),
-                    SizedBox(height: 16.h),
-                    Text(
-                      recipe.instructions,
-                      style: bodyTextStyle.copyWith(fontSize: 15.sp, height: 1.5),
-                    ),
-
-                    SizedBox(height: 100.h),
-                  ],
+                    );
+                  },
                 ),
               ),
             ),
           ),
         ],
       ),
-      bottomNavigationBar: recipe.youtubeUrl.isNotEmpty
+      bottomNavigationBar: MediaQuery.of(context).size.width <= 800 && recipe.youtubeUrl.isNotEmpty
           ? Container(
               padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 24.h),
               decoration: const BoxDecoration(
                 color: white,
               ),
-              child: CustomButton(
-                text: 'Watch Video Tutorial',
-                icon: const Icon(Icons.play_circle_fill, color: Colors.white),
-                onPressed: () => _launchYoutube(recipe.youtubeUrl),
-              ),
+              child: _buildVideoButton(recipe),
             )
           : null,
+    );
+  }
+
+  Widget _buildHeader(RecipeModel recipe) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(recipe.name, style: titleTextStyle.copyWith(fontSize: 24.sp)),
+              SizedBox(height: 8.h),
+              Row(
+                children: [
+                  Icon(Icons.location_on_outlined, color: empty, size: 16.sp),
+                  SizedBox(width: 4.w),
+                  Text(recipe.area, style: bodyTextStyle.copyWith(color: empty, fontSize: 14.sp)),
+                ],
+              ),
+            ],
+          ),
+        ),
+        CategoryTag(label: recipe.category),
+      ],
+    );
+  }
+
+  Widget _buildStats(RecipeModel recipe) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _buildStatCard(Icons.timer_outlined, recipe.time, "Time"),
+        _buildStatCard(Icons.star_outline, recipe.rating, "Rating"),
+        _buildStatCard(Icons.local_fire_department_outlined, recipe.calories, "kcal"),
+      ],
+    );
+  }
+
+  Widget _buildIngredients(RecipeModel recipe) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Ingredients", style: titleTextStyle.copyWith(fontSize: 18.sp)),
+        SizedBox(height: 16.h),
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: recipe.ingredients.length,
+          separatorBuilder: (context, index) => SizedBox(height: 12.h),
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                Container(
+                  width: 6.r,
+                  height: 6.r,
+                  decoration: const BoxDecoration(color: secondary, shape: BoxShape.circle),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(child: Text(recipe.ingredients[index], style: bodyTextStyle.copyWith(fontSize: 15.sp))),
+                Text(recipe.measures[index], style: bodyTextStyle.copyWith(color: empty, fontSize: 14.sp)),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInstructions(RecipeModel recipe) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Instructions", style: titleTextStyle.copyWith(fontSize: 18.sp)),
+        SizedBox(height: 16.h),
+        Text(
+          recipe.instructions,
+          style: bodyTextStyle.copyWith(fontSize: 15.sp, height: 1.5),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildVideoButton(RecipeModel recipe) {
+    return CustomButton(
+      text: 'Watch Video Tutorial',
+      icon: const Icon(Icons.play_circle_fill, color: Colors.white),
+      onPressed: () => _launchYoutube(recipe.youtubeUrl),
     );
   }
 

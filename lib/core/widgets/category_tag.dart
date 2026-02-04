@@ -18,6 +18,8 @@ class CategoryTag extends StatelessWidget {
       child: Text(
         label,
         style: bodyTextStyle.copyWith(color: primary, fontSize: 10.sp, fontWeight: FontWeight.bold),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

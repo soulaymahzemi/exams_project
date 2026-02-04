@@ -43,61 +43,67 @@ class _IntroVideoBody extends StatelessWidget {
 
           Positioned.fill(
             child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "DELIVERED\nFAST FOOD\nTO YOUR\nRECIPES.",
-                  style: TextStyle(
-                    fontSize: 28.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    height: 1.3,
-                  ),
-                ),
-                SizedBox(height: 12.h),
-                Text(
-                  "Follow all recipes to get best experience",
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.white70,
-                  ),
-                ),
-                SizedBox(height: 40.h),
-
-
-                CustomButton(
-                  text: "Login",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>  const LoginPage(),
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 40.h),
+                          Text(
+                            "DELIVERED\nFAST FOOD\nTO YOUR\nRECIPES.",
+                            style: TextStyle(
+                              fontSize: 28.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              height: 1.3,
+                            ),
+                          ),
+                          SizedBox(height: 12.h),
+                          Text(
+                            "Follow all recipes to get best experience",
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          SizedBox(height: 40.h),
+                          CustomButton(
+                            text: "Login",
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const LoginPage(),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 16.h),
+                          CustomButton(
+                            text: "Register",
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const SignUpPage(),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 40.h),
+                        ],
                       ),
-                    );
-                  },
-                ),
-                SizedBox(height: 16.h),
-
-
-                CustomButton(
-                  text: "Register",
-                  onPressed: () {
-                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const SignUpPage(),
-                      ),
-                    );                  },
-                ),
-
-                SizedBox(height: 40.h),
-              ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-      )],
+          ),],
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:esame/features/authentification/viewmodel/login_viewmodel.dart';
 import 'package:esame/features/intro/view/welcome_view.dart';
 import 'package:esame/features/home/viewmodel/recipe_viewmodel.dart';
 import 'package:esame/features/home/viewmodel/chef_viewmodel.dart';
+import 'package:esame/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:esame/core/them/app_theme.dart';
 import 'package:esame/firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,10 @@ void main() async {
         ChangeNotifierProvider(create: (_) => IntroViewmodel()),
         ChangeNotifierProvider(create: (_) => RecipeViewModel()),
         ChangeNotifierProvider(create: (_) => ChefViewModel()),
+        ChangeNotifierProxyProvider<LoginViewModel, ProfileViewModel>(
+          create: (context) => ProfileViewModel(context.read<LoginViewModel>()),
+          update: (context, loginVM, previous) => previous ?? ProfileViewModel(loginVM),
+        ),
       ],
       child: const MyApp(),
     ),

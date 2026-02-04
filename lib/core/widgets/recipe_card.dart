@@ -101,10 +101,15 @@ class RecipeCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        recipe.category,
-                        style: bodyTextStyle.copyWith(color: empty, fontSize: 12.sp),
+                      Expanded(
+                        child: Text(
+                          recipe.category,
+                          style: bodyTextStyle.copyWith(color: empty, fontSize: 12.sp),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
+                      SizedBox(width: 8.w),
                       Row(
                         children: [
                           Icon(Icons.star, color: secondary, size: 14.sp),
@@ -183,7 +188,8 @@ class RecipeCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CategoryTag(label: recipe.category),
+                      Flexible(child: CategoryTag(label: recipe.category)),
+                      SizedBox(width: 8.w),
                       const TimeBadge(time: '25 min'),
                     ],
                   ),

@@ -17,7 +17,7 @@ class RecipeVideoReel extends StatefulWidget {
 }
 
 class _RecipeVideoReelState extends State<RecipeVideoReel> {
-  late WebViewController _controller;
+  WebViewController? _controller;
   bool _isLoading = true;
 
   @override
@@ -27,6 +27,10 @@ class _RecipeVideoReelState extends State<RecipeVideoReel> {
   }
 
   void _initWebView() {
+    if (kIsWeb || (defaultTargetPlatform != TargetPlatform.android && defaultTargetPlatform != TargetPlatform.iOS)) {
+      setState(() => _isLoading = false);
+      return;
+    }
 
     final videoId = _extractYoutubeId(widget.recipe.youtubeUrl);
     
@@ -70,7 +74,7 @@ class _RecipeVideoReelState extends State<RecipeVideoReel> {
 
         Container(
           color: black,
-          child: kIsWeb 
+          child: _controller == null  
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +82,7 @@ class _RecipeVideoReelState extends State<RecipeVideoReel> {
                     Icon(Icons.play_circle_fill, color: secondary, size: 80.sp),
                     SizedBox(height: 20.h),
                     Text(
-                      "Video playback is restricted on Web.",
+                      "Video playback is restricted on this platform.",
                       style: titleTextStyle.copyWith(color: white, fontSize: 16.sp),
                     ),
                     SizedBox(height: 10.h),
@@ -91,7 +95,7 @@ class _RecipeVideoReelState extends State<RecipeVideoReel> {
                   ],
                 ),
               )
-            : WebViewWidget(controller: _controller),
+            : WebViewWidget(controller: _controller!),
         ),
 
 
